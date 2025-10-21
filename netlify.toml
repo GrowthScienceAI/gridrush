@@ -1,0 +1,104 @@
+# Netlify Configuration for GridRush
+# Racing Strategy Game - Static Site Deployment
+
+[build]
+  # No build command needed - static HTML/CSS/JS
+  publish = "."
+
+  # Build command (optional - for future minification)
+  # command = "npm run build"
+
+[build.environment]
+  # Node version (if needed in future)
+  NODE_VERSION = "18"
+
+# Headers for security and performance
+[[headers]]
+  for = "/*"
+  [headers.values]
+    # Security headers
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    X-XSS-Protection = "1; mode=block"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+    # Cache control for HTML (no cache)
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/css/*"
+  [headers.values]
+    # Cache CSS for 1 year
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/js/*"
+  [headers.values]
+    # Cache JavaScript for 1 year
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    # Cache assets for 1 year
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Redirects and rewrites
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+  # This ensures SPA-like behavior - all routes serve index.html
+
+# Custom error page (optional - for future)
+# [[redirects]]
+#   from = "/404"
+#   to = "/index.html"
+#   status = 404
+
+# Performance optimizations
+[build.processing]
+  skip_processing = false
+
+[build.processing.css]
+  bundle = true
+  minify = true
+
+[build.processing.js]
+  bundle = false  # Keep separate for debugging
+  minify = true
+
+[build.processing.html]
+  pretty_urls = true
+
+[build.processing.images]
+  compress = true
+
+# Plugin configuration (optional - for future use)
+# [[plugins]]
+#   package = "@netlify/plugin-lighthouse"
+
+# Environment-specific settings
+[context.production]
+  # Production-specific settings
+  environment = { NODE_ENV = "production" }
+
+[context.deploy-preview]
+  # Preview deployments
+  environment = { NODE_ENV = "preview" }
+
+[context.branch-deploy]
+  # Branch deployments
+  environment = { NODE_ENV = "development" }
+
+# Form handling (for future contact forms)
+# [build]
+#   functions = "functions"
+
+# Dev settings for local testing
+[dev]
+  command = "python -m http.server 8888"
+  port = 8888
+  targetPort = 8888
+  publish = "."
+  autoLaunch = true

@@ -56,6 +56,124 @@ python -m http.server 8000  # Then visit http://localhost:8000
 
 ---
 
+## 🌐 Deploy to Netlify
+
+GridRush is optimized for **one-click deployment** to Netlify!
+
+### Option 1: Deploy via GitHub (Recommended)
+
+1. **Push to GitHub** (if not already done):
+   ```bash
+   git push origin main
+   ```
+
+2. **Connect to Netlify:**
+   - Go to [netlify.com](https://netlify.com)
+   - Click "Add new site" → "Import an existing project"
+   - Choose "GitHub" and authorize
+   - Select the `gridrush` repository
+
+3. **Configure build settings:**
+   - **Build command:** Leave empty (static site)
+   - **Publish directory:** `.` (root directory)
+   - Click "Deploy site"
+
+4. **Done!** Your game will be live at `https://[random-name].netlify.app`
+
+### Option 2: Deploy via Netlify CLI
+
+```bash
+# Install Netlify CLI
+npm install -g netlify-cli
+
+# Navigate to project
+cd gridrush
+
+# Login to Netlify
+netlify login
+
+# Deploy
+netlify deploy --prod
+```
+
+### Option 3: Drag & Drop Deploy
+
+1. Go to [app.netlify.com/drop](https://app.netlify.com/drop)
+2. Drag the entire `gridrush` folder
+3. Done! Instant deployment
+
+### Custom Domain Setup
+
+After deployment, add a custom domain:
+
+1. Go to **Site settings** → **Domain management**
+2. Click "Add custom domain"
+3. Enter your domain (e.g., `gridrush.com`)
+4. Follow DNS configuration instructions
+
+### Deploy Status Badge
+
+Add this to your README to show deployment status:
+
+```markdown
+[![Netlify Status](https://api.netlify.com/api/v1/badges/YOUR-SITE-ID/deploy-status)](https://app.netlify.com/sites/YOUR-SITE-NAME/deploys)
+```
+
+### Continuous Deployment
+
+Netlify automatically redeploys when you push to GitHub:
+
+```bash
+# Make changes
+git add .
+git commit -m "Update game features"
+git push origin main
+
+# Netlify detects push and redeploys automatically!
+```
+
+### Performance Features
+
+GridRush on Netlify includes:
+
+- ✅ **Automatic HTTPS** - Free SSL certificate
+- ✅ **CDN Distribution** - Global edge network
+- ✅ **Asset Optimization** - CSS/JS minification
+- ✅ **Instant Cache Invalidation** - Fresh updates
+- ✅ **Continuous Deployment** - Auto-deploy on push
+- ✅ **Deploy Previews** - Test PRs before merging
+- ✅ **Analytics** - Built-in visitor tracking (optional)
+
+### Environment Variables (Future)
+
+For future features requiring API keys:
+
+```bash
+# Set in Netlify dashboard
+Site settings → Environment variables → Add variable
+```
+
+### Troubleshooting Deployment
+
+**Build fails:**
+- Ensure `netlify.toml` is in root directory
+- Check that all file paths are relative (no `/` prefix)
+
+**404 errors:**
+- Verify `_redirects` file exists
+- Check `publish = "."` in `netlify.toml`
+
+**Slow loading:**
+- Enable asset optimization in Site settings
+- Check browser console for errors
+
+### Preview Deployment URL
+
+**Live Demo:** [https://gridrush.netlify.app](https://gridrush.netlify.app)
+*(Update this URL after deployment)*
+
+---
+
 ## 📖 How to Play
 
 ### Objective

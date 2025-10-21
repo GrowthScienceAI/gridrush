@@ -1,0 +1,4 @@
+# Netlify Redirects for GridRush
+# All routes serve the main index.html (SPA-like behavior)
+
+/*    /index.html   200
