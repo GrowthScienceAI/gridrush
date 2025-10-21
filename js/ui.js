@@ -23,7 +23,7 @@ class UIController {
   init() {
     this.cacheElements();
     this.attachEventListeners();
-    this.showScreen('start');
+    this.showScreen('splash');
   }
 
   /**
@@ -31,6 +31,7 @@ class UIController {
    */
   cacheElements() {
     // Screens
+    this.elements.splashScreen = document.getElementById('splash-screen');
     this.elements.startScreen = document.getElementById('start-screen');
     this.elements.gameScreen = document.getElementById('game-screen');
     this.elements.endScreen = document.getElementById('end-screen');
@@ -53,6 +54,7 @@ class UIController {
     this.elements.hintDisplay = document.getElementById('hint-display');
 
     // Buttons
+    this.elements.splashStartButton = document.getElementById('splash-start-btn');
     this.elements.playAIButton = document.getElementById('play-ai-btn');
     this.elements.playPlayerButton = document.getElementById('play-player-btn');
     this.elements.rematchButton = document.getElementById('rematch-btn');
@@ -73,6 +75,13 @@ class UIController {
    * Attach event listeners
    */
   attachEventListeners() {
+    // Splash screen button
+    if (this.elements.splashStartButton) {
+      this.elements.splashStartButton.addEventListener('click', () => {
+        this.showScreen('start');
+      });
+    }
+
     // Start screen buttons - show instructions first
     if (this.elements.playAIButton) {
       this.elements.playAIButton.addEventListener('click', () => {
@@ -165,12 +174,15 @@ class UIController {
     this.currentScreen = screen;
 
     // Hide all screens
+    if (this.elements.splashScreen) this.elements.splashScreen.style.display = 'none';
     if (this.elements.startScreen) this.elements.startScreen.style.display = 'none';
     if (this.elements.gameScreen) this.elements.gameScreen.style.display = 'none';
     if (this.elements.endScreen) this.elements.endScreen.style.display = 'none';
 
     // Show requested screen
-    if (screen === 'start' && this.elements.startScreen) {
+    if (screen === 'splash' && this.elements.splashScreen) {
+      this.elements.splashScreen.style.display = 'flex';
+    } else if (screen === 'start' && this.elements.startScreen) {
       this.elements.startScreen.style.display = 'flex';
     } else if (screen === 'game' && this.elements.gameScreen) {
       this.elements.gameScreen.style.display = 'flex';
