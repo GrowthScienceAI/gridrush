@@ -31,50 +31,22 @@ body {
   padding: 20px;
 }
 
-/* SPLASH SCREEN */
-.splash-container {
-  text-align: center;
-  max-width: 800px;
-  width: 100%;
+/* START SCREEN */
+.start-wrapper {
   display: flex;
-  flex-direction: column;
-  align-items: center;
   gap: 2rem;
-}
-
-.splash-image {
+  align-items: center;
+  max-width: 1200px;
   width: 100%;
-  max-width: 600px;
+}
+
+.landing-image {
+  flex: 1;
+  max-width: 500px;
+  width: 100%;
   height: auto;
-  border-radius: 20px;
-  box-shadow: 0 10px 50px rgba(255, 215, 0, 0.3);
-  border: 3px solid #FFD700;
-}
-
-.splash-btn {
-  padding: 1.5rem 4rem;
-  font-size: 2rem;
-  font-weight: bold;
-  font-family: Impact, 'Arial Black', sans-serif;
-  font-style: italic;
-  text-transform: uppercase;
-  letter-spacing: 0.2em;
-  background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
-  color: #000;
-  border: none;
   border-radius: 15px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 5px 20px rgba(255, 215, 0, 0.5);
-}
-
-.splash-btn:hover {
-  transform: scale(1.1);
-  box-shadow: 0 10px 40px rgba(255, 215, 0, 0.8);
-}
-
-.splash-btn:active {
-  transform: scale(1.05);
+  object-fit: cover;
 }
 
 /* START SCREEN */
