@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Primary Meta Tags -->
+  <title>GridRush - Racing Strategy Game | Ultimate Tic-Tac-Toe with Dice</title>
+  <meta name="title" content="GridRush - Racing Strategy Game">
+  <meta name="description" content="Race to victory in GridRush! A fast-paced Ultimate Tic-Tac-Toe game with dice mechanics, strategic AI, and NASCAR-themed racing aesthetics. Play in 5 minutes!">
+  <meta name="keywords" content="grid rush, gridrush, racing game, strategy game, tic tac toe, ultimate tic tac toe, dice game, board game, AI game, NASCAR game, browser game, online game, free game">
+  <meta name="author" content="GrowthScience AI">
+  <meta name="robots" content="index, follow">
+
+  <!-- Theme Color -->
+  <meta name="theme-color" content="#E10600">
+  <meta name="msapplication-TileColor" content="#E10600">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://gridrush.netlify.app/">
+  <meta property="og:title" content="GridRush - Racing Strategy Game">
+  <meta property="og:description" content="Race to victory in GridRush! Ultimate Tic-Tac-Toe meets NASCAR with dice mechanics and strategic AI. Play in 5 minutes!">
+  <meta property="og:image" content="https://gridrush.netlify.app/assets/social-preview.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://gridrush.netlify.app/">
+  <meta property="twitter:title" content="GridRush - Racing Strategy Game">
+  <meta property="twitter:description" content="Race to victory in GridRush! Ultimate Tic-Tac-Toe meets NASCAR with dice mechanics and strategic AI.">
+  <meta property="twitter:image" content="https://gridrush.netlify.app/assets/social-preview.png">
+
+  <!-- Canonical URL -->
+  <link rel="canonical" href="https://gridrush.netlify.app/">
+
+  <!-- Preconnect for performance (future CDNs) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+
+  <!-- CSS Files -->
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/theme.css">
+  <link rel="stylesheet" href="css/animations.css">
+
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏎️</text></svg>">
+</head>
+<body>
+
+  <!-- START SCREEN -->
+  <div id="start-screen" class="screen">
+    <div class="start-container">
+      <div class="logo">
+        <h1>🏁 GRIDRUSH 🏁</h1>
+        <p class="tagline">Ultimate Racing Strategy</p>
+      </div>
+
+      <div class="menu-buttons">
+        <button id="play-ai-btn" class="menu-btn primary">
+          🤖 PLAY VS AI
+        </button>
+
+        <button id="play-player-btn" class="menu-btn">
+          👥 PLAY VS PLAYER
+        </button>
+
+        <button id="how-to-play-btn" class="menu-btn secondary">
+          📖 HOW TO PLAY
+        </button>
+      </div>
+
+      <div class="quick-rules">
+        <h3>Quick Rules</h3>
+        <div class="rules-grid">
+          <div class="rule-item">
+            <span class="rule-icon">🎲 1-2</span>
+            <span class="rule-text">TEE SHOT<br><small>Stay in grid</small></span>
+          </div>
+          <div class="rule-item">
+            <span class="rule-icon">🎲 3-4</span>
+            <span class="rule-text">APPROACH<br><small>Move adjacent</small></span>
+          </div>
+          <div class="rule-item">
+            <span class="rule-icon">🎲 5-6</span>
+            <span class="rule-text">FINISH<br><small>Jump anywhere</small></span>
+          </div>
+        </div>
+        <p class="rules-summary">Win 3 sub-grids in a row • 5-minute timer • 3 shots per turn</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- GAME SCREEN -->
+  <div id="game-screen" class="screen" style="display: none;">
+    <div class="game-container">
+
+      <!-- Header -->
+      <header class="game-header">
+        <div class="header-top">
+          <h1 class="game-title">GRIDRUSH</h1>
+          <div id="timer-display" class="timer">5:00</div>
+        </div>
+        <div class="header-bottom">
+          <div id="score-display" class="score-display">P1: 0 | P2: 0</div>
+          <div id="current-player" class="current-player">Player 1</div>
+        </div>
+      </header>
+
+      <!-- Hint Display -->
+      <div id="hint-display" class="hint-display" style="display: none;">
+        <div class="hint-icon">💡</div>
+        <div class="hint-content">
+          <div class="hint-message">Hint message</div>
+          <div class="hint-advice">Hint advice</div>
+        </div>
+      </div>
+
+      <!-- Game Board -->
+      <div class="board-wrapper">
+        <div id="board-container" class="board-container">
+          <!-- Sub-grids generated by JS -->
+        </div>
+      </div>
+
+      <!-- Controls -->
+      <div class="controls-section">
+        <div id="status-message" class="status-message">
+          Roll the dice to start!
+        </div>
+
+        <div class="controls-group">
+          <div id="shot-counter" class="shot-counter">Shot 1/3</div>
+          <button id="dice-button" class="dice-button">
+            🎲 ROLL DICE
+          </button>
+          <div id="dice-result" class="dice-result">
+            <!-- Dice result shown here -->
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- END SCREEN -->
+  <div id="end-screen" class="screen" style="display: none;">
+    <div class="end-container">
+      <div id="end-title" class="end-title">
+        🏆 PLAYER 1 WINS! 🏆
+      </div>
+
+      <div id="end-message" class="end-message">
+        Checkered Flag!
+      </div>
+
+      <div id="end-stats" class="end-stats">
+        <!-- Stats populated by JS -->
+      </div>
+
+      <div class="end-buttons">
+        <button id="rematch-btn" class="menu-btn primary">
+          🔄 RACE AGAIN
+        </button>
+        <button id="menu-btn" class="menu-btn">
+          🏠 MAIN MENU
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaScript Files -->
+  <script src="js/game.js"></script>
+  <script src="js/dice.js"></script>
+  <script src="js/timer.js"></script>
+  <script src="js/ai.js"></script>
+  <script src="js/hints.js"></script>
+  <script src="js/ui.js"></script>
+
+  <!-- Main App -->
+  <script>
+    // Initialize the game when DOM is ready
+    document.addEventListener('DOMContentLoaded', () => {
+      // Create game instances
+      const game = new GridRushGame();
+      const dice = new DiceController();
+      const ai = new GridRushAI(game);
+      const hints = new HintSystem(game);
+
+      // Create timer with callbacks
+      const timer = new GameTimer(
+        (timeRemaining) => {
+          // On tick - update UI
+          if (ui) {
+            ui.updateTimerDisplay();
+          }
+        },
+        () => {
+          // On timeout - end game
+          game.handleTimeout();
+          if (ui) {
+            ui.handleGameEnd();
+          }
+        }
+      );
+
+      // Create UI controller
+      const ui = new UIController(game, dice, timer, ai, hints);
+
+      // Initialize UI
+      ui.init();
+
+      // Make available globally for debugging
+      window.game = game;
+      window.ui = ui;
+      window.dice = dice;
+      window.timer = timer;
+      window.ai = ai;
+      window.hints = hints;
+
+      console.log('🏎️ GridRush initialized! Type "game" in console to inspect game state.');
+    });
+  </script>
+
+</body>
+</html>
