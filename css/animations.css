@@ -35,6 +35,55 @@
   animation: cell-place 0.4s ease-out;
 }
 
+/* Car Movement Animation - Drives to destination */
+@keyframes car-drive-in {
+  0% {
+    opacity: 0;
+    transform: translate(var(--start-x), var(--start-y)) scale(0.5);
+  }
+  30% {
+    opacity: 1;
+  }
+  70% {
+    transform: translate(calc(var(--start-x) * 0.3), calc(var(--start-y) * 0.3)) scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+  }
+}
+
+.cell.car-arriving {
+  animation: car-drive-in 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Motion blur trail effect */
+.cell.car-arriving::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    currentColor 50%,
+    transparent 100%
+  );
+  opacity: 0.2;
+  animation: motion-blur 0.6s ease-out;
+  pointer-events: none;
+}
+
+@keyframes motion-blur {
+  0% {
+    opacity: 0.4;
+    transform: scaleX(2);
+  }
+  100% {
+    opacity: 0;
+    transform: scaleX(1);
+  }
+}
+
 /* Cell Hover Pulse */
 @keyframes cell-hover-pulse {
   0%, 100% {
@@ -99,6 +148,43 @@
   animation: winner-overlay-entry 0.8s ease-out, flag-wave 2s ease-in-out 1s infinite;
 }
 
+/* Racing Flag Animations */
+@keyframes flag-wave-left {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(10deg);
+  }
+}
+
+@keyframes flag-wave-right {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(-10deg);
+  }
+}
+
+/* Yellow Caution Flag - Timer Warning */
+.timer.yellow::before {
+  content: '🟡';
+  position: absolute;
+  left: -35px;
+  animation: flag-wave-left 1s ease-in-out infinite;
+}
+
+/* Red Flag - Last 10 seconds */
+.timer.red::before,
+.timer.flash-red::before {
+  content: '🚩';
+  position: absolute;
+  left: -35px;
+  animation: flag-wave-left 0.5s ease-in-out infinite;
+  filter: drop-shadow(0 0 5px rgba(255, 0, 0, 0.8));
+}
+
 /* Active Grid Glow Pulse */
 @keyframes active-glow {
   0%, 100% {
@@ -111,6 +197,26 @@
 
 .sub-grid.active {
   animation: active-glow 2s infinite;
+}
+
+/* Starting Line Checkered Pattern Animation */
+@keyframes checkered-slide {
+  0% {
+    background-position: 0 0, 6px 6px;
+  }
+  100% {
+    background-position: 12px 0, 18px 6px;
+  }
+}
+
+/* Green GO Indicator Flash */
+@keyframes green-flash {
+  0%, 100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 1;
+  }
 }
 
 /* Timer Flash Animation */
@@ -155,6 +261,24 @@
 
 .score-display.updated {
   animation: score-update 0.5s ease-out;
+}
+
+/* Position Flip Animation */
+@keyframes position-flip {
+  0% {
+    transform: rotateX(0deg);
+  }
+  50% {
+    transform: rotateX(90deg);
+  }
+  100% {
+    transform: rotateX(0deg);
+  }
+}
+
+.position-value.updated {
+  animation: position-flip 0.6s ease-in-out;
+  display: inline-block;
 }
 
 /* Status Message Slide In */

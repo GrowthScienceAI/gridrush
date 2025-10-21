@@ -65,10 +65,6 @@
         <button id="play-player-btn" class="menu-btn">
           👥 PLAY VS PLAYER
         </button>
-
-        <button id="how-to-play-btn" class="menu-btn secondary">
-          📖 HOW TO PLAY
-        </button>
       </div>
 
       <div class="quick-rules">
@@ -103,6 +99,12 @@
           <div id="timer-display" class="timer">5:00</div>
         </div>
         <div class="header-bottom">
+          <div class="position-indicators">
+            <div id="position-display" class="position-display">
+              <span class="position-label">POSITION:</span>
+              <span id="position-value" class="position-value">🏎️ 1ST | 🏁 2ND</span>
+            </div>
+          </div>
           <div id="score-display" class="score-display">P1: 0 | P2: 0</div>
           <div id="current-player" class="current-player">Player 1</div>
         </div>
@@ -124,6 +126,11 @@
         </div>
       </div>
 
+      <!-- Racing Flags Status -->
+      <div id="racing-flags" class="racing-flags">
+        <!-- Flags will be injected here by JavaScript -->
+      </div>
+
       <!-- Controls -->
       <div class="controls-section">
         <div id="status-message" class="status-message">
@@ -141,6 +148,105 @@
         </div>
       </div>
 
+    </div>
+  </div>
+
+  <!-- INSTRUCTIONS MODAL -->
+  <div id="instructions-modal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>📖 How to Play GridRush</h2>
+        <button id="close-instructions-btn" class="close-btn">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <!-- Game Overview -->
+        <section class="instructions-section">
+          <h3>🎯 Objective</h3>
+          <p>Win <strong>3 sub-grids in a row</strong> (horizontally, vertically, or diagonally) on the main 3×3 game board before your opponent does, or have the most sub-grids when the 5-minute timer expires!</p>
+        </section>
+
+        <!-- Game Structure -->
+        <section class="instructions-section">
+          <h3>🏁 Game Structure</h3>
+          <p>The game board has <strong>9 sub-grids</strong> arranged in a 3×3 layout. Each sub-grid contains 9 cells (also 3×3). You take turns placing your markers (🏎️ or 🏁) in cells.</p>
+        </section>
+
+        <!-- Turn Structure -->
+        <section class="instructions-section">
+          <h3>🔄 Turn Structure</h3>
+          <p>Each turn consists of <strong>3 shots</strong>:</p>
+          <ol>
+            <li>Roll the dice 🎲</li>
+            <li>Place your marker based on the dice result</li>
+            <li>Repeat for shots 2 and 3</li>
+            <li>Turn switches to your opponent</li>
+          </ol>
+        </section>
+
+        <!-- Dice Mechanics -->
+        <section class="instructions-section">
+          <h3>🎲 Dice Mechanics</h3>
+          <div class="dice-table">
+            <div class="dice-row">
+              <div class="dice-cell"><strong>Roll 1-2</strong></div>
+              <div class="dice-cell">⛳ <strong>TEE SHOT</strong></div>
+              <div class="dice-cell">Stay in the current sub-grid</div>
+            </div>
+            <div class="dice-row">
+              <div class="dice-cell"><strong>Roll 3-4</strong></div>
+              <div class="dice-cell">🏁 <strong>APPROACH</strong></div>
+              <div class="dice-cell">Move to an adjacent sub-grid (up/down/left/right)</div>
+            </div>
+            <div class="dice-row">
+              <div class="dice-cell"><strong>Roll 5-6</strong></div>
+              <div class="dice-cell">🏆 <strong>FINISH</strong></div>
+              <div class="dice-cell">Jump to any available sub-grid</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Winning -->
+        <section class="instructions-section">
+          <h3>🏆 Winning</h3>
+          <p><strong>Win a Sub-Grid:</strong> Get 3 markers in a row (horizontal, vertical, or diagonal) in that sub-grid. Won sub-grids show your car emoji.</p>
+          <p><strong>Win the Game:</strong> Get 3 sub-grids in a row on the main board, OR have the most sub-grids when time expires.</p>
+        </section>
+
+        <!-- Special Rules -->
+        <section class="instructions-section">
+          <h3>⚡ Special Rules</h3>
+          <ul>
+            <li><strong>Next Grid Selection:</strong> The cell position where you place your marker determines which sub-grid your opponent plays next. (Example: place in cell 5 → opponent goes to sub-grid 5)</li>
+            <li><strong>Won Grids:</strong> You cannot place markers in already-won sub-grids</li>
+            <li><strong>If Next Grid is Won:</strong> Your opponent can choose any grid on their next roll</li>
+            <li><strong>Timer:</strong> 5-minute countdown with warnings at 1:00, 0:30, and 0:10</li>
+          </ul>
+        </section>
+
+        <!-- Strategy Tips -->
+        <section class="instructions-section">
+          <h3>💡 Strategy Tips</h3>
+          <ul>
+            <li><strong>Control the Center:</strong> Sub-grid 5 (center) and center cells give you maximum strategic options</li>
+            <li><strong>Think Ahead:</strong> Consider where your move will send your opponent</li>
+            <li><strong>Block First:</strong> Prevent opponent wins before going for your own</li>
+            <li><strong>Watch the Timer:</strong> Don't waste time on perfect moves when you're ahead</li>
+            <li><strong>Use Hints:</strong> After 3 moves, the game provides strategic hints to help you improve</li>
+          </ul>
+        </section>
+
+        <!-- Game Modes -->
+        <section class="instructions-section">
+          <h3>🎮 Game Modes</h3>
+          <p><strong>🤖 Play vs AI:</strong> Challenge a strategic AI opponent with smart blocking and positioning.</p>
+          <p><strong>👥 Play vs Player:</strong> Hot-seat local multiplayer - pass the device between turns!</p>
+        </section>
+      </div>
+
+      <div class="modal-footer">
+        <button id="start-playing-btn" class="menu-btn primary">🏎️ Got It - Let's Race!</button>
+      </div>
     </div>
   </div>
 

@@ -12,7 +12,7 @@
 
 body {
   font-family: 'Arial', 'Helvetica', sans-serif;
-  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  background: #1a1a1a;
   color: #ffffff;
   min-height: 100vh;
   display: flex;
@@ -36,6 +36,9 @@ body {
   text-align: center;
   max-width: 600px;
   width: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 2rem;
+  border-radius: 15px;
 }
 
 .logo h1 {
@@ -94,21 +97,23 @@ body {
 .menu-btn.secondary {
   font-size: 1rem;
   padding: 0.8rem 1.5rem;
-  background: transparent;
+  background: rgba(0, 0, 0, 0.5);
   border-color: #666;
+  color: #000000 !important;
 }
 
 .menu-btn.secondary:hover {
   border-color: #FFD700;
   background: rgba(255, 215, 0, 0.1);
+  color: #000000 !important;
 }
 
 /* Quick Rules */
 .quick-rules {
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(0, 0, 0, 0.7);
   padding: 2rem;
   border-radius: 10px;
-  border: 2px solid #333;
+  border: 2px solid #444;
 }
 
 .quick-rules h3 {
@@ -139,6 +144,7 @@ body {
   font-size: 0.9rem;
   text-align: center;
   font-weight: bold;
+  color: #ffffff;
 }
 
 .rule-text small {
@@ -221,6 +227,38 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.position-indicators {
+  flex: 1;
+  min-width: 200px;
+}
+
+.position-display {
+  font-size: 1.1rem;
+  font-weight: bold;
+  padding: 0.4rem 0.8rem;
+  border-radius: 5px;
+  background: rgba(0, 0, 0, 0.5);
+  border: 2px solid #666;
+  display: inline-block;
+}
+
+.position-label {
+  color: #999;
+  font-size: 0.9rem;
+  margin-right: 0.5rem;
+  font-family: Impact, 'Arial Black', sans-serif;
+  font-style: italic;
+}
+
+.position-value {
+  color: #FFD700;
+  font-family: Impact, 'Arial Black', sans-serif;
+  font-style: italic;
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
 }
 
 .score-display {
@@ -291,6 +329,7 @@ body {
   font-size: 1.1rem;
   font-weight: bold;
   margin-bottom: 0.3rem;
+  color: #ffffff;
 }
 
 .hint-advice {
@@ -402,6 +441,43 @@ body {
   pointer-events: none;
 }
 
+/* Racing Flags */
+.racing-flags {
+  text-align: center;
+  padding: 0.5rem;
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.flag-indicator {
+  font-size: 2rem;
+  display: inline-block;
+  animation: flag-wave-right 1s ease-in-out infinite;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+}
+
+.flag-indicator.checkered {
+  animation: flag-wave-right 0.8s ease-in-out infinite;
+}
+
+.flag-indicator.red {
+  animation: flag-wave-left 0.5s ease-in-out infinite;
+  filter: drop-shadow(0 0 10px rgba(255, 0, 0, 0.8));
+}
+
+.flag-indicator.yellow {
+  animation: flag-wave-left 1s ease-in-out infinite;
+  filter: drop-shadow(0 0 10px rgba(255, 255, 0, 0.6));
+}
+
+.flag-indicator.green {
+  animation: flag-wave-right 0.6s ease-in-out infinite;
+  filter: drop-shadow(0 0 10px rgba(0, 255, 0, 0.6));
+}
+
 /* Controls */
 .controls-section {
   background: rgba(0, 0, 0, 0.5);
@@ -470,6 +546,7 @@ body {
   border-radius: 5px;
   min-width: 200px;
   text-align: center;
+  color: #FFD700;
   opacity: 0;
   transition: opacity 0.3s ease;
 }
@@ -492,6 +569,7 @@ body {
 .end-title {
   font-size: 2.5rem;
   margin-bottom: 1rem;
+  color: #FFD700;
   text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
 }
 
@@ -535,7 +613,212 @@ body {
   gap: 1rem;
 }
 
+/* INSTRUCTIONS MODAL */
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.modal-content {
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  border: 3px solid #FFD700;
+  border-radius: 15px;
+  max-width: 800px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 10px 50px rgba(255, 215, 0, 0.3);
+}
+
+.modal-header {
+  padding: 2rem;
+  border-bottom: 2px solid #333;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  z-index: 1;
+}
+
+.modal-header h2 {
+  color: #FFD700;
+  font-size: 2rem;
+  margin: 0;
+  letter-spacing: 0.05em;
+}
+
+.close-btn {
+  font-size: 2.5rem;
+  background: none;
+  border: none;
+  color: #FFD700;
+  cursor: pointer;
+  padding: 0;
+  width: 40px;
+  height: 40px;
+  line-height: 1;
+  transition: all 0.3s ease;
+}
+
+.close-btn:hover {
+  color: #E10600;
+  transform: rotate(90deg);
+}
+
+.modal-body {
+  padding: 2rem;
+}
+
+.instructions-section {
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #333;
+}
+
+.instructions-section:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+.instructions-section h3 {
+  color: #FFD700;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  letter-spacing: 0.05em;
+}
+
+.instructions-section p {
+  color: #ccc;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 0.8rem;
+}
+
+.instructions-section ul,
+.instructions-section ol {
+  color: #ccc;
+  font-size: 1.1rem;
+  line-height: 1.8;
+  margin-left: 1.5rem;
+}
+
+.instructions-section li {
+  margin-bottom: 0.5rem;
+}
+
+.instructions-section strong {
+  color: #FFD700;
+}
+
+/* Dice Table */
+.dice-table {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+  overflow: hidden;
+  margin-top: 1rem;
+}
+
+.dice-row {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr 2fr;
+  border-bottom: 1px solid #333;
+}
+
+.dice-row:last-child {
+  border-bottom: none;
+}
+
+.dice-cell {
+  padding: 1rem;
+  color: #ccc;
+  font-size: 1rem;
+}
+
+.dice-cell:nth-child(1) {
+  background: rgba(225, 6, 0, 0.1);
+  border-right: 1px solid #333;
+  color: #FFD700;
+}
+
+.dice-cell:nth-child(2) {
+  background: rgba(0, 0, 0, 0.2);
+  border-right: 1px solid #333;
+}
+
+.dice-cell:nth-child(3) {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.modal-footer {
+  padding: 2rem;
+  border-top: 2px solid #333;
+  display: flex;
+  justify-content: center;
+  position: sticky;
+  bottom: 0;
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+}
+
+.modal-footer .menu-btn {
+  min-width: 250px;
+}
+
 /* Responsive */
+@media (max-width: 768px) {
+  .modal-content {
+    max-height: 95vh;
+  }
+
+  .modal-header {
+    padding: 1.5rem;
+  }
+
+  .modal-header h2 {
+    font-size: 1.5rem;
+  }
+
+  .modal-body {
+    padding: 1.5rem;
+  }
+
+  .instructions-section h3 {
+    font-size: 1.2rem;
+  }
+
+  .instructions-section p,
+  .instructions-section ul,
+  .instructions-section ol {
+    font-size: 1rem;
+  }
+
+  .dice-row {
+    grid-template-columns: 1fr;
+  }
+
+  .dice-cell {
+    padding: 0.8rem;
+    border-bottom: 1px solid #333;
+  }
+
+  .dice-cell:nth-child(1),
+  .dice-cell:nth-child(2) {
+    border-right: none;
+  }
+
+  .dice-row:last-child .dice-cell:last-child {
+    border-bottom: none;
+  }
+}
+
 @media (max-width: 768px) {
   .logo h1 {
     font-size: 2.5rem;

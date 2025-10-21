@@ -15,6 +15,7 @@
 
 /* Track Texture Background */
 body {
+  background: #1a1a1a !important;
   background-image:
     repeating-linear-gradient(
       90deg,
@@ -29,7 +30,7 @@ body {
       transparent 50px,
       rgba(255, 215, 0, 0.03) 50px,
       rgba(255, 215, 0, 0.03) 100px
-    );
+    ) !important;
 }
 
 /* Racing Stripes for Headers */
@@ -85,28 +86,35 @@ body {
     0 0 30px rgba(255, 215, 0, 0.2);
 }
 
-/* Speed Lines for Active Grids */
+/* Starting Line Checkered Border for Active Grids */
 .sub-grid.active::before {
   content: '';
   position: absolute;
-  top: 50%;
-  left: -20px;
-  width: 15px;
-  height: 3px;
-  background: linear-gradient(90deg, transparent, var(--highlight));
-  opacity: 0.6;
+  inset: -4px;
+  border-radius: 5px;
+  background-image:
+    linear-gradient(45deg, #FFD700 25%, #000 25%),
+    linear-gradient(-45deg, #FFD700 25%, #000 25%),
+    linear-gradient(45deg, #000 75%, #FFD700 75%),
+    linear-gradient(-45deg, #000 75%, #FFD700 75%);
+  background-size: 12px 12px;
+  background-position: 0 0, 6px 0, 6px -6px, 0px 6px;
+  opacity: 0.4;
+  animation: checkered-slide 0.8s linear infinite;
+  pointer-events: none;
+  z-index: 0;
 }
 
+/* Green GO Indicator for Active Grids */
 .sub-grid.active::after {
-  content: '';
+  content: '🟢';
   position: absolute;
-  top: 50%;
-  right: -20px;
-  width: 15px;
-  height: 3px;
-  background: linear-gradient(-90deg, transparent, var(--highlight));
-  opacity: 0.6;
-  margin-top: 10px;
+  top: 8px;
+  right: 8px;
+  font-size: 1.5rem;
+  animation: green-flash 1.5s ease-in-out infinite;
+  z-index: 10;
+  filter: drop-shadow(0 0 4px rgba(0, 255, 0, 0.8));
 }
 
 /* Victory Lane Styling */
@@ -181,6 +189,14 @@ body {
 }
 
 /* Menu Buttons Racing Style */
+.menu-btn.secondary {
+  color: #000000 !important;
+}
+
+.menu-btn.secondary:hover {
+  color: #000000 !important;
+}
+
 .menu-btn.primary {
   position: relative;
   overflow: hidden;

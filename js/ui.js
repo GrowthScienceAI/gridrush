@@ -14,6 +14,7 @@ class UIController {
     this.elements = {};
     this.currentScreen = 'start';
     this.isAIThinking = false;
+    this.pendingGameMode = null; // Store which game mode was selected
   }
 
   /**
@@ -46,13 +47,14 @@ class UIController {
     this.elements.shotCounter = document.getElementById('shot-counter');
     this.elements.timerDisplay = document.getElementById('timer-display');
     this.elements.scoreDisplay = document.getElementById('score-display');
+    this.elements.positionDisplay = document.getElementById('position-display');
+    this.elements.positionValue = document.getElementById('position-value');
     this.elements.statusMessage = document.getElementById('status-message');
     this.elements.hintDisplay = document.getElementById('hint-display');
 
     // Buttons
     this.elements.playAIButton = document.getElementById('play-ai-btn');
     this.elements.playPlayerButton = document.getElementById('play-player-btn');
-    this.elements.howToPlayButton = document.getElementById('how-to-play-btn');
     this.elements.rematchButton = document.getElementById('rematch-btn');
     this.elements.menuButton = document.getElementById('menu-btn');
 
@@ -60,21 +62,29 @@ class UIController {
     this.elements.endTitle = document.getElementById('end-title');
     this.elements.endMessage = document.getElementById('end-message');
     this.elements.endStats = document.getElementById('end-stats');
+
+    // Instructions modal elements
+    this.elements.instructionsModal = document.getElementById('instructions-modal');
+    this.elements.closeInstructionsButton = document.getElementById('close-instructions-btn');
+    this.elements.startPlayingButton = document.getElementById('start-playing-btn');
   }
 
   /**
    * Attach event listeners
    */
   attachEventListeners() {
-    // Start screen buttons
+    // Start screen buttons - show instructions first
     if (this.elements.playAIButton) {
-      this.elements.playAIButton.addEventListener('click', () => this.startGame(true));
+      this.elements.playAIButton.addEventListener('click', () => {
+        this.pendingGameMode = true; // AI mode
+        this.showHowToPlay();
+      });
     }
     if (this.elements.playPlayerButton) {
-      this.elements.playPlayerButton.addEventListener('click', () => this.startGame(false));
-    }
-    if (this.elements.howToPlayButton) {
-      this.elements.howToPlayButton.addEventListener('click', () => this.showHowToPlay());
+      this.elements.playPlayerButton.addEventListener('click', () => {
+        this.pendingGameMode = false; // Player mode
+        this.showHowToPlay();
+      });
     }
 
     // Game controls
@@ -88,6 +98,42 @@ class UIController {
     }
     if (this.elements.menuButton) {
       this.elements.menuButton.addEventListener('click', () => this.showScreen('start'));
+    }
+
+    // Instructions modal buttons
+    if (this.elements.closeInstructionsButton) {
+      this.elements.closeInstructionsButton.addEventListener('click', () => {
+        this.hideInstructions();
+        // Start the game with the pending mode if one was selected
+        if (this.pendingGameMode !== null) {
+          this.startGame(this.pendingGameMode);
+          this.pendingGameMode = null;
+        }
+      });
+    }
+    if (this.elements.startPlayingButton) {
+      this.elements.startPlayingButton.addEventListener('click', () => {
+        this.hideInstructions();
+        // Start the game with the pending mode if one was selected
+        if (this.pendingGameMode !== null) {
+          this.startGame(this.pendingGameMode);
+          this.pendingGameMode = null;
+        }
+      });
+    }
+
+    // Close modal when clicking outside
+    if (this.elements.instructionsModal) {
+      this.elements.instructionsModal.addEventListener('click', (e) => {
+        if (e.target === this.elements.instructionsModal) {
+          this.hideInstructions();
+          // Start the game with the pending mode if one was selected
+          if (this.pendingGameMode !== null) {
+            this.startGame(this.pendingGameMode);
+            this.pendingGameMode = null;
+          }
+        }
+      });
     }
   }
 
@@ -103,6 +149,9 @@ class UIController {
 
     // Start timer
     this.timer.start();
+
+    // Show green flag - race is on!
+    this.showRacingFlag('green', 3000);
 
     // Enable dice button
     this.enableDiceButton();
@@ -345,6 +394,7 @@ class UIController {
    */
   updateAllDisplays() {
     this.updateScoreDisplay();
+    this.updatePositionDisplay();
     this.updatePlayerDisplay();
     this.updateShotCounter();
     this.updateTimerDisplay();
@@ -356,6 +406,36 @@ class UIController {
   updateScoreDisplay() {
     if (this.elements.scoreDisplay) {
       this.elements.scoreDisplay.textContent = `P1: ${this.game.score.player1} | P2: ${this.game.score.player2}`;
+    }
+  }
+
+  /**
+   * Update position display (racing positions)
+   */
+  updatePositionDisplay() {
+    if (this.elements.positionValue) {
+      const p1Score = this.game.score.player1;
+      const p2Score = this.game.score.player2;
+
+      let positionText = '';
+
+      if (p1Score > p2Score) {
+        positionText = '🏎️ 1ST | 🏁 2ND';
+      } else if (p2Score > p1Score) {
+        positionText = '🏁 1ST | 🏎️ 2ND';
+      } else {
+        positionText = '🏎️ TIED | 🏁 TIED';
+      }
+
+      // Add flip animation if position changed
+      if (this.elements.positionValue.textContent !== positionText) {
+        this.elements.positionValue.classList.add('updated');
+        setTimeout(() => {
+          this.elements.positionValue.classList.remove('updated');
+        }, 600);
+      }
+
+      this.elements.positionValue.textContent = positionText;
     }
   }
 
@@ -478,6 +558,9 @@ class UIController {
     this.timer.pause();
     this.disableDiceButton();
 
+    // Show checkered flag - race is over!
+    this.showRacingFlag('checkered', 3000);
+
     setTimeout(() => {
       this.showEndScreen();
     }, 1500);
@@ -533,31 +616,25 @@ class UIController {
   }
 
   /**
-   * Show how to play
+   * Show how to play modal
    */
   showHowToPlay() {
-    alert(`
-🏁 GRIDRUSH - HOW TO PLAY 🏁
+    if (this.elements.instructionsModal) {
+      this.elements.instructionsModal.style.display = 'flex';
+      // Prevent body scroll when modal is open
+      document.body.style.overflow = 'hidden';
+    }
+  }
 
-OBJECTIVE:
-Win 3 sub-grids in a row to win the game!
-
-DICE MOVES:
-🎲 1-2: TEE SHOT - Stay in current grid
-🎲 3-4: APPROACH - Move to adjacent grid
-🎲 5-6: FINISH - Jump to any grid
-
-GAMEPLAY:
-• Each turn has 3 shots
-• Roll dice before each shot
-• Place your marker based on the roll
-• First to get 3 sub-grids in a row wins!
-
-⏱️ TIME LIMIT: 5 minutes
-If time runs out, most sub-grids won wins!
-
-Good luck! 🏎️
-    `);
+  /**
+   * Hide instructions modal
+   */
+  hideInstructions() {
+    if (this.elements.instructionsModal) {
+      this.elements.instructionsModal.style.display = 'none';
+      // Restore body scroll
+      document.body.style.overflow = '';
+    }
   }
 
   /**
@@ -574,7 +651,7 @@ Good luck! 🏎️
   }
 
   /**
-   * Animate cell placement
+   * Animate cell placement with car driving in
    */
   animateCellPlacement(subGrid, cell) {
     const cellElement = document.querySelector(
@@ -582,10 +659,87 @@ Good luck! 🏎️
     );
 
     if (cellElement) {
-      cellElement.classList.add('placed');
+      // Calculate starting position for car animation
+      const startPos = this.calculateCarStartPosition(subGrid, cell);
+      cellElement.style.setProperty('--start-x', startPos.x);
+      cellElement.style.setProperty('--start-y', startPos.y);
+
+      // Add car arrival animation
+      cellElement.classList.add('car-arriving');
+
+      // Also add the placed class for backwards compatibility
       setTimeout(() => {
-        cellElement.classList.remove('placed');
-      }, 600);
+        cellElement.classList.add('placed');
+      }, 300);
+
+      // Clean up animation classes
+      setTimeout(() => {
+        cellElement.classList.remove('car-arriving', 'placed');
+      }, 800);
+    }
+  }
+
+  /**
+   * Calculate where the car should start from (off-board position)
+   */
+  calculateCarStartPosition(subGrid, cell) {
+    // Determine general direction based on sub-grid position
+    const gridRow = Math.floor(subGrid / 3);
+    const gridCol = subGrid % 3;
+
+    // Calculate offset based on which edge is closest
+    let x = '0px';
+    let y = '0px';
+
+    // Start from different edges based on grid position
+    if (gridRow === 0) {
+      y = '-200px'; // Come from top
+    } else if (gridRow === 2) {
+      y = '200px'; // Come from bottom
+    }
+
+    if (gridCol === 0) {
+      x = '-200px'; // Come from left
+    } else if (gridCol === 2) {
+      x = '200px'; // Come from right
+    }
+
+    // Center grids come from diagonal
+    if (gridRow === 1 && gridCol === 1) {
+      x = '-150px';
+      y = '-150px';
+    }
+
+    return { x, y };
+  }
+
+  /**
+   * Show racing flag indicator
+   */
+  showRacingFlag(flagType, duration = 2000) {
+    const racingFlagsContainer = document.getElementById('racing-flags');
+    if (!racingFlagsContainer) return;
+
+    const flagEmojis = {
+      checkered: '🏁',
+      green: '🟢',
+      yellow: '🟡',
+      red: '🚩'
+    };
+
+    const flag = document.createElement('span');
+    flag.className = `flag-indicator ${flagType}`;
+    flag.textContent = flagEmojis[flagType] || '🏁';
+
+    racingFlagsContainer.innerHTML = '';
+    racingFlagsContainer.appendChild(flag);
+
+    if (duration > 0) {
+      setTimeout(() => {
+        if (flag.parentElement === racingFlagsContainer) {
+          racingFlagsContainer.innerHTML = '';
+        }
+      }, duration);
     }
   }
 
