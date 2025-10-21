@@ -884,8 +884,23 @@ body {
   }
 
   .timer {
-    font-size: 1.3rem;
-    min-width: 80px;
+    font-size: 1.1rem;
+    min-width: 70px;
+    padding: 0.3rem 0.6rem;
+  }
+
+  .game-container {
+    gap: 0.5rem;
+    max-width: 100%;
+  }
+
+  .game-header {
+    padding: 0.6rem;
+  }
+
+  .header-top,
+  .header-bottom {
+    gap: 0.5rem;
   }
 
   .board-container {
@@ -906,12 +921,33 @@ body {
   }
 
   .dice-button {
-    font-size: 1.2rem;
-    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+    padding: 0.6rem 1.2rem;
   }
 
   .screen {
-    padding: 10px;
+    padding: 5px;
+    overflow-y: auto;
+  }
+
+  .controls-section {
+    padding: 0.6rem;
+  }
+
+  .status-message {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .shot-counter {
+    font-size: 1rem;
+    padding: 0.4rem 0.8rem;
+  }
+
+  .dice-result {
+    font-size: 1rem;
+    padding: 0.4rem 0.8rem;
+    min-width: 150px;
   }
 
   .menu-btn {
